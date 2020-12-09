@@ -8,6 +8,11 @@
     <title>Document</title>
 </head>
 <body>
+<nav>
+    <a href="{{ url_for('auth.login') }} ">Log in</a>
+    <a href="{{ url_for('auth.signup') }} ">Sign up</a>
+    <a href="{{ url_for('main.home') }} ">Home</a>
+</nav>
 {% block content %}
 
 {% endblock %}
