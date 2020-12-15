@@ -1,5 +1,5 @@
 from flask import Blueprint, request, url_for, render_template
-from flask_login import login_user
+from flask_login import login_user, logout_user
 from werkzeug.utils import redirect
 
 from app import db
@@ -32,3 +32,15 @@ def signup():
         return redirect(url_for('auth.login'))
 
     return render_template('signup.html', form=form)
+
+
+@bp_auth.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('main.home'))
+
+
+@bp_auth.route('/user/<username>')
+def user(username):
+    user_db = User.query.filter_by(username=username).first_or_404()
+    return render_template('user.html', user =user_db)
