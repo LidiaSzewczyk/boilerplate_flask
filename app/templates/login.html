@@ -1,27 +1,18 @@
 {% extends '_base.html' %}
+{% from "_form_macros.html" import render_field  %}
 
 {% block content %}
 
 <div class="p-3">
-    <form action="" method="post">
+    <form action="" method="post" novalidate>
 
         {{ form.hidden_tag() }}
-        <div class="mb-3">
-            {{ form.username.label }}
-            {{ form.username}}
-        </div>
-        <div class="mb-3">
-            {{ form.password.label }}
-            {{ form.password}}
-        </div>
-        <div class="mb-3">
-            {{ form.remember_me.label }}
-            {{ form.remember_me}}
-        </div>
-        <div class="mb-3">
-            {{ form.submit}}
+        {{ render_field(form.username) }}
+        {{ render_field(form.password)}}
+        {{ render_field(form.remember_me)}}
+        {{ form.submit}}
 
-        </div>
+
     </form>
 </div>
 {% endblock %}
