@@ -17,5 +17,20 @@ body {
 
 .main-footer {
     align-self: flex-end;
+    clear: both;
 }
+
+.custom-btn {
+    float: right;
+}
+
+.custom-form {
+    padding-bottom: 55px;
+}
+
+.img-aside {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+       }
 

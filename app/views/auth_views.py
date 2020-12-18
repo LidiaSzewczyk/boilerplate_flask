@@ -39,6 +39,7 @@ def signup():
 
 
 @bp_auth.route('/logout')
+@login_required
 def logout():
     logout_user()
     flash("You logged out.", 'warning')
@@ -49,7 +50,8 @@ def logout():
 @login_required
 def user(username):
     user_db = User.query.filter_by(username=username).first_or_404()
-    return render_template('user.html', user=user_db)
+    form = DeleteUserForm()
+    return render_template('user.html', user=user_db, form=form)
 
 
 @bp_auth.route('/edit_user/<username>', methods=['GET', 'POST'])
@@ -63,16 +65,15 @@ def edit_user(username):
     form = ChangePasswordForm()
 
     if form.validate_on_submit():
-
         user_db.password = form.new_password.data
         db.session.commit()
         flash(f'Your password has been changed.', 'info')
         return redirect(url_for('auth.user', username=username))
-
+    flash('Incorrect password.', 'danger')
     return render_template('edit_user.html', form=form, user=user_db)
 
 
-@bp_auth.route('/delete_user/<username>', methods=['GET', 'POST'])
+@bp_auth.route('/delete_user/<username>', methods=['POST'])
 @login_required
 def delete_user(username):
     user_db = User.query.filter_by(username=username).first_or_404()
@@ -87,5 +88,5 @@ def delete_user(username):
         db.session.commit()
         flash(f'You deleted your account.', 'info')
         return redirect(url_for('main.home'))
-
-    return render_template('delete_user.html', form=form, user=user_db)
+    flash('Incorrect password.', 'danger')
+    return redirect(url_for('auth.user', username=current_user.username))

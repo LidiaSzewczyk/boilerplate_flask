@@ -1,3 +1,4 @@
+from flask_login import current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Length, Regexp, EqualTo, Email, ValidationError
@@ -17,11 +18,11 @@ class SignUpForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(message='This field is required.'), Length(3, 80),
                                                    Regexp('^[A-Za-z0-9_]{3,}$',
                                                           message='Usernames consist of numbers, letters and underscore.')])
+    email = StringField('Email', validators=[DataRequired(message='This field is required.'), Length(1, 120), Email()])
     password = PasswordField('Password', validators=[DataRequired(message='This field is required.'),
                                                      Length(min=5, message='Field must be at least 5 characters long.'),
                                                      EqualTo('password2', message='Password must match.')])
     password2 = PasswordField('Confirm Password', validators=[DataRequired(message='This field is required.')])
-    email = StringField('Email', validators=[DataRequired(message='This field is required.'), Length(1, 120), Email()])
     submit = SubmitField('Sign up')
 
     @staticmethod
@@ -36,7 +37,7 @@ class SignUpForm(FlaskForm):
 
 
 class ChangePasswordForm(FlaskForm):
-    old_password = PasswordField('Current password:',
+    old_password = PasswordField('Current password',
                                  validators=[DataRequired(message='This field is required.')])
 
     new_password = PasswordField('New password', validators=[DataRequired(message='This field is required.'),
@@ -49,14 +50,20 @@ class ChangePasswordForm(FlaskForm):
 
     @staticmethod
     def validate_old_password(self, password):
-        pass
-    # TODO ze sprawdzaniem hash
-
-
-
+        user = User.query.filter_by(username=current_user.username).first_or_404()
+        if not user.check_password(password.data):
+            raise ValidationError('Incorrect password')
 
 
 class DeleteUserForm(FlaskForm):
-    password = PasswordField('Password:', validators=[DataRequired(message='This field is required.'), Length(min=5,
-                                                                                                              message='Field must be at least 5 characters long.')])
+    password = PasswordField('Password', validators=[DataRequired(message='This field is required.'), Length(min=5,
+                                                                                                             message='Field must be at least 5 characters long.')])
     submit = SubmitField('Delete your account')
+
+    @staticmethod
+    def validate_password(self, password):
+        user = User.query.filter_by(username=current_user.username).first_or_404()
+        if not user.check_password(password.data):
+            raise ValidationError('Incorrect password')
+
+
