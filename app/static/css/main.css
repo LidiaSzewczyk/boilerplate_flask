@@ -34,3 +34,6 @@ body {
     height: auto;
        }
 
+.modal-cookie.active {
+    display: block;
+}

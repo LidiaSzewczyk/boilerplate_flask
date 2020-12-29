@@ -1,10 +1,12 @@
+
 from os import abort
 
 from flask import Blueprint, request, url_for, render_template, flash
 from flask_login import login_user, logout_user, current_user, login_required
+from flask_mail import Message
 from werkzeug.utils import redirect
 
-from app import db
+from app import db, mail
 from app.forms.user_forms import LoginForm, SignUpForm, ChangePasswordForm, DeleteUserForm
 from app.models.user_models import User
 
@@ -19,6 +21,10 @@ def login():
         user = User.get_by_username(form.username.data)
         if user is not None and user.check_password(form.password.data):
             login_user(user)
+            msg = Message("Hello",
+                          sender="lidia.szewczyk@gmail.com",
+                          recipients=["pawel.konior@gmail.com"])
+            mail.send(msg)
             flash(f'You are logged in!', 'success')
             return redirect(request.args.get('next') or url_for('main.home'))
     return render_template('login.html', form=form)

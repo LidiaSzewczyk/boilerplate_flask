@@ -10,7 +10,7 @@
             <div class="modal-body">
                 {% with action = url_for("auth.delete_user", username=user.username) %}
 
-                {% include '_form.html' %}
+                {% include 'helpers/_form.html' %}
                 {% endwith %}
             </div>
             <div class="modal-footer">

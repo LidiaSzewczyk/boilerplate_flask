@@ -14,14 +14,14 @@
 
 </head>
 <body>
-{% include '_header.html' %}
+{% include 'helpers/_header.html' %}
 
 
 <main class="container">
-    {% include '_flash.html' %}
+    {% include 'helpers/_flash.html' %}
 
     <div class="row">
-        <div class="col-9">
+        <div class="col-9">`
             {% block content %}
 
             {% endblock %}
@@ -31,11 +31,13 @@
 
             {% endblock %}
         </div>
-    </div>
+    </div><!-- Button trigger modal -->
 
 
-</main>
-{% include '_footer.html' %}
+
+{% include 'helpers/_footer.html' %}
+{% include 'helpers/_cookie.html' %}
+
 
 {% block scripts %}
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -45,6 +47,7 @@
         integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
         crossorigin="anonymous"></script>
 <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{ url_for('static', filename='js/cookie.js')}}"></script>
 {% endblock %}
 
 </body>

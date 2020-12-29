@@ -1,4 +1,4 @@
-{% extends '_base.html' %}
+{% extends 'helpers/_base.html' %}
 {% set modal_id = 'deleteModalForm' %}
 {% set btn_id = 'deleteForm' %}
 
@@ -6,11 +6,11 @@
 <div class="col-6">
 <h3>Hello <b>{{user.username}}</b></h3>
 
-<a class="btn btn-outline-primary" href="{{ url_for('auth.edit_user', username=current_user.username)}}">Edit</a>
+<a class="btn btn-outline-primary" href="{{ url_for('auth.edit_user', username=user.username)}}">Edit</a>
 <button class="btn btn-outline-danger"  id="{{btn_id}}" data-target="#{{modal_id}}" data-toggle="modal" >Delete</button>
 
 
-{% include '_modal-form.html' %}
+{% include 'helpers/_modal-form.html' %}
 
 
 {% endblock %}
